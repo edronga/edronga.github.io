@@ -322,6 +322,7 @@ let TIME_STAMP = Date.now()
 const FRAMES_PER_SECONDS = 60
 const REFRESH_INTERVAL = 1000 / FRAMES_PER_SECONDS
 let INPUT = false
+let IS_LOADED = false
 const STARPOSITION = {
     x: 140,
     y: 190
@@ -430,6 +431,10 @@ function resize() {
     canvas.height = window.innerHeight
 }
 document.addEventListener('resize', resize)
+document.addEventListener('load', function(){
+    IS_LOADED = true
+    console.log("All ressources sucessfully loaded")
+})
 
 document.addEventListener('touchstart', function (e) {
     e.preventDefault();
@@ -724,7 +729,10 @@ function drawTargetTile()
     // -playerXMapPixelPosition + playerScreenPositionXPixel
     let x = (- PLAYER.tilePosition.x + TARGET_TILE.x)*32 + PLAYER.screenPosition.x
     let y = (- PLAYER.tilePosition.y + TARGET_TILE.y) *32 + PLAYER.screenPosition.y
-    ctx.strokeRect(x, y, 32, 32)
+    ctx.beginPath()
+    ctx.arc(x + 16, y +16, Math.sqrt(Math.pow(16,2) + Math.pow(16,2)), 0, 2* Math.PI)
+    ctx.stroke()
+    // previously a square : ctx.strokeRect(x, y, 32, 32)
 }
 
 function drawEventSprites(){
@@ -1023,15 +1031,6 @@ function mainGameOverWin(){
 
     CLOCK.value = 10000
 
-    if (INPUT){
-        gameMode.set('intro')
-        INPUT = false
-        CLOCK.initialize()
-        documentInteractionTracker = 0
-        PLAYER.heldObject = 'nothing'
-        stopAllMusic()
-    }
-
     if (currentMusic1 !== 'musicHappyBirthday' && MUSIC_BUTTON_STATE){
         musicTicTacClock.pause() 
         musicAlarmClock.pause()
@@ -1040,6 +1039,20 @@ function mainGameOverWin(){
         musicHappyBirthday.play()
         currentMusic1 = 'musicHappyBirthday'
         currentMusic2 = ''
+    }
+
+    if (INPUT){
+        gameMode.set('intro')
+        INPUT = false
+        CLOCK.initialize()
+        documentInteractionTracker = 0
+        PLAYER.heldObject = 'nothing'
+        PLAYER.tilePosition.x = 140
+        PLAYER.tilePosition.y = 190
+        PLAYER.mapPixelPosition.x = 140 * 32
+        PLAYER.mapPixelPosition.y = 190 * 32
+        frameForAnimation.value = 0
+        stopAllMusic()
     }
 
 }
@@ -1073,14 +1086,6 @@ function mainGameOverLoss(){
     }
     ctx.drawImage(img, 0,0, img.width, img.height, centerPosition.x, centerPosition.y, size, size )
 
-    if (INPUT){
-        gameMode.set('intro')
-        INPUT = false
-        CLOCK.initialize()
-        documentInteractionTracker = 0
-        stopAllMusic()
-    }
-
     if (currentMusic1 !== 'musicSadViolin' && MUSIC_BUTTON_STATE){
         musicTicTacClock.pause() 
         musicAlarmClock.pause()
@@ -1089,6 +1094,21 @@ function mainGameOverLoss(){
         currentMusic1 = 'musicSadViolin'
         currentMusic2 = ''
     }
+
+    if (INPUT){
+        gameMode.set('intro')
+        INPUT = false
+        CLOCK.initialize()
+        documentInteractionTracker = 0
+        PLAYER.tilePosition.x = 140
+        PLAYER.tilePosition.y = 190
+        PLAYER.mapPixelPosition.x = 140 * 32
+        PLAYER.mapPixelPosition.y = 190 * 32
+        frameForAnimation.value = 0
+        stopAllMusic()
+    }
+
+    
 }
 
 // debugging
