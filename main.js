@@ -431,7 +431,10 @@ function resize() {
 }
 document.addEventListener('resize', resize)
 
-document.addEventListener("touchstart", function(e){
+document.addEventListener('touchstart', function (e) {
+    e.preventDefault();
+}, {passive: false})
+document.addEventListener('touchstart', function(e){
     //e.preventDefault()
     touchPosition.active = true
     INPUT = true
