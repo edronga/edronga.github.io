@@ -139,9 +139,22 @@ const imgShiningBall1 = new Image()
 imgShiningBall1.src = 'Images/shiningBall1.png'
 const imgShiningBall2 = new Image()
 imgShiningBall2.src = 'Images/shiningBall2.png'
+const imgRedBall1 = new Image()
+imgRedBall1.src = 'Images/redBall1.png'
+const imgRedBall2 = new Image()
+imgRedBall2 .src = 'Images/redBall2.png'
+
+const imgCharacterGhost = new Image()
+imgCharacterGhost.src = 'Images/characterGhost.png'
+const imgCharacterGlasses = new Image()
+imgCharacterGlasses.src = 'Images/characterGlasses.png'
+const imgCharacterMonocole = new Image()
+imgCharacterMonocole.src = 'Images/characterMonocle.png'
+const imgCharacterZombie = new Image ()
+imgCharacterZombie.src = 'Images/characterZombie.png'
 
 const map = new Image ()
-map.src = 'Images/mainMap-test.png'
+map.src = 'Images/mainMap.png'
 
 /* Music */
 const musicAlarmClock = new Audio()
@@ -159,6 +172,13 @@ musicSadViolin.loop = true
 const musicHappyBirthday = new Audio()
 musicHappyBirthday.src = 'Music/epic-happy-birthday-196126.mp3'
 musicHappyBirthday.loop = true
+
+const soundEffectCoin = new Audio()
+soundEffectCoin.src = 'Music/coin-257878.mp3'
+soundEffectCoin.loop = false
+const soundEffectWrong = new Audio()
+soundEffectWrong.src = 'Music/error-4-199275.mp3'
+soundEffectWrong.loop = false
 
 let currentMusic1 = ''
 let currentMusic2 = ''
@@ -260,29 +280,207 @@ let PASSIVE_EVENT_LIST = {
     }
 }
 
-PASSIVE_EVENT_LIST.addEvent(140,50, function(){
-    CLOCK.add(10)
-    PASSIVE_EVENT_LIST.removeEvent(140,50)
-}, function(){
-    if (frameForAnimation %2 === 0){
-        return imgShiningBall1
-    }
-    else{
-        return imgShiningBall2
-    }
+function initializeEventList(){
+    PASSIVE_EVENT_LIST.addEvent(88,192, function(){
+        PLAYER.tilePosition.x = 150
+        PLAYER.tilePosition.y = 150
+        PLAYER.mapPixelPosition.x = PLAYER.tilePosition.x * 32
+        PLAYER.mapPixelPosition.y = PLAYER.tilePosition.y * 32
+        currentInputSequence = GEN_empty()
+    
     })
+    for (let i = 142; i< 158; i++){
+        PASSIVE_EVENT_LIST.addEvent(i,147, function(){
+        PLAYER.tilePosition.x = 88
+        PLAYER.tilePosition.y = 188
+        PLAYER.mapPixelPosition.x = PLAYER.tilePosition.x * 32
+        PLAYER.mapPixelPosition.y = PLAYER.tilePosition.y * 32
+        currentInputSequence = GEN_empty()
+        })
+    }
 
-PASSIVE_EVENT_LIST.addEvent(140,174, function(){
-    CLOCK.add(10)
-    PASSIVE_EVENT_LIST.removeEvent(140,174)
-}, function(){
-    if (frameForAnimation %2 === 0){
-        return imgShiningBall1
+    let list = []
+    let list2 = []
+    list.push([88,182])
+    list.push([88,172])
+    list.push([93,172])
+    list.push([97,172])
+    list.push([102,172])
+    list.push([108,172])
+    list.push([108,161])
+    list.push([108,151])
+    list.push([102,151])
+    list.push([93,151])
+    list.push([97,151])
+    list.push([87,151])
+    
+    for (let i = 0; i< list.length; i++){
+        let x = list[i][0]
+        let y = list[i][1]
+        PASSIVE_EVENT_LIST.addEvent(x, y, function(){
+            CLOCK.add(10)
+            PASSIVE_EVENT_LIST.removeEvent(x, y)
+            soundEffectCoin.play()
+        }, function(){
+            if ([0,1,2].includes(frameForAnimation.value)){
+                return imgShiningBall1
+            }
+            else{
+                return imgShiningBall2
+            }
+            })
     }
-    else{
-        return imgShiningBall2
+
+    list = []
+    for (let i = 74; i<= 88; i++){
+        for (let j = 32; j<=37; j++){
+            list.push([i,j])
+        }
     }
-    })
+
+    for (let i = 105; i<= 129; i++){
+        for (let j = 43; j<=49; j++){
+            list.push([i,j])
+        }
+    }
+
+    for (let i = 0; i< list.length; i++){
+        let x = list[i][0]
+        let y = list[i][1]
+        PASSIVE_EVENT_LIST.addEvent(x,y, function(){
+            CLOCK.add(-2)
+            PASSIVE_EVENT_LIST.removeEvent(x,y)
+            soundEffectWrong.play()
+        }, function(){
+            if ([0,1,2].includes(frameForAnimation.value)){
+                return imgRedBall1
+            }
+            else{
+                return imgRedBall2
+            }
+            })
+    }
+
+    list = []
+    list2 = []
+    for (let i = 130; i <=206; i++){
+        for (let j = 178; j<= 190; j++){
+            if (Math.random() <= 0.05){
+                list.push([i,j])
+            }
+            if (Math.random() >= 0.975){
+                list2.push([i,j])
+            }
+        }
+    }
+    for (let i = 188; i <=206; i++){
+        for (let j = 138; j<= 177; j++){
+            if (Math.random() <= 0.05){
+                list.push([i,j])
+            }
+            if (Math.random() >= 0.975){
+                list2.push([i,j])
+            }
+        }
+    }
+    for (let i = 213; i <=228; i++){
+        for (let j = 113; j<= 136; j++){
+            if (Math.random() <= 0.05){
+                list.push([i,j])
+            }
+            if (Math.random() >= 0.975){
+                list2.push([i,j])
+            }
+        }
+    }
+    for (let i = 185; i <=194; i++){
+        for (let j = 56; j<= 99; j++){
+            if (Math.random() <= 0.05){
+                list.push([i,j])
+            }
+            if (Math.random() >= 0.975){
+                list2.push([i,j])
+            }
+        }
+    }
+    for (let i = 0; i< list.length; i++){
+        let x = list[i][0]
+        let y = list[i][1]
+        PASSIVE_EVENT_LIST.addEvent(x, y, function(){
+            CLOCK.add(2)
+            PASSIVE_EVENT_LIST.removeEvent(x, y)
+            soundEffectCoin.play()
+        }, function(){
+            if ([0,1,2].includes(frameForAnimation.value)){
+                return imgShiningBall1
+            }
+            else{
+                return imgShiningBall2
+            }
+            })
+    }
+    for (let i = 0; i< list2.length; i++){
+        let x = list2[i][0]
+        let y = list2[i][1]
+        PASSIVE_EVENT_LIST.addEvent(x, y, function(){
+            CLOCK.add(-2)
+            PASSIVE_EVENT_LIST.removeEvent(x, y)
+            soundEffectWrong.play()
+        }, function(){
+            if ([0,1,2].includes(frameForAnimation.value)){
+                return imgRedBall1
+            }
+            else{
+                return imgRedBall2
+            }
+            })
+    }
+
+    list = []
+
+    for (let i = 131; i <=162; i++){
+        for (let j = 40; j<= 45; j++){
+            if (Math.random() <= 0.5){
+                list.push([i,j])
+            }
+        }
+    }
+    for (let i = 0; i< list.length; i++){
+        let x = list[i][0]
+        let y = list[i][1]
+        PASSIVE_EVENT_LIST.addEvent(x, y, function(){
+            CLOCK.add(2)
+            PASSIVE_EVENT_LIST.removeEvent(x, y)
+            soundEffectCoin.play()
+        }, function(){
+            if ([0,1,2].includes(frameForAnimation.value)){
+                return imgShiningBall1
+            }
+            else{
+                return imgShiningBall2
+            }
+            })
+    }
+
+    list = []
+    for (let i = 19; i <=21; i++){
+        for (let j = 10; j<= 11; j++){
+                list.push([i,j])
+        }
+    }
+    for (let i = 0; i< list.length; i++){
+        let x = list[i][0]
+        let y = list[i][1]
+        PASSIVE_EVENT_LIST.addEvent(x, y, function(){
+            gameMode.set('gameOverWin')
+        })
+    }
+
+    
+}
+initializeEventList()
+
+
 
 /* Game State Data */
 
@@ -324,8 +522,8 @@ const REFRESH_INTERVAL = 1000 / FRAMES_PER_SECONDS
 let INPUT = false
 let IS_LOADED = false
 const STARPOSITION = {
-    x: 140,
-    y: 190
+    x: 88,
+    y: 188
 }
 let PLAYER = {
     tilePosition: {
@@ -375,7 +573,7 @@ let CLOCK = {
         let minutes = Math.floor(CLOCK.value/60)
         minutes = (minutes <= 99)? minutes: 99;
         let minutesText = (minutes <= 9)? '0' + `${minutes}`: `${minutes}`;
-        let seconds = CLOCK.value - minutes * CLOCK.value
+        let seconds = CLOCK.value - minutes * 60
         let secondsText = (seconds<= 9)? '0' + `${seconds.toFixed(0)}`: `${seconds.toFixed(0)}`;
         if (secondsText.length === 1){secondsText = '0'+ secondsText}
         return minutesText + ":" + secondsText
@@ -555,6 +753,7 @@ function updatePlayerTilePosition(){
             }
             if (frameForAnimation.value === 5){
                 PLAYER.tilePosition.x--
+                PLAYER.mapPixelPosition.x = PLAYER.tilePosition.x * 32
                 frameForAnimation.initialize()
             }        
             break;
@@ -572,6 +771,7 @@ function updatePlayerTilePosition(){
             }
             if (frameForAnimation.value === 5){
                 PLAYER.tilePosition.x++
+                PLAYER.mapPixelPosition.x = PLAYER.tilePosition.x * 32
                 frameForAnimation.initialize()
             }
             break;
@@ -589,6 +789,7 @@ function updatePlayerTilePosition(){
             }
             if (frameForAnimation.value === 5){
                 PLAYER.tilePosition.y--
+                PLAYER.mapPixelPosition.y = PLAYER.tilePosition.y * 32
                 frameForAnimation.initialize()
             }
             break;
@@ -606,11 +807,14 @@ function updatePlayerTilePosition(){
             }
             if (frameForAnimation.value === 5){
                 PLAYER.tilePosition.y++
+                PLAYER.mapPixelPosition.y = PLAYER.tilePosition.y * 32
                 frameForAnimation.initialize()
             }
             break;
         default:
             PLAYER.direction = "neutral"
+            PLAYER.mapPixelPosition.x = PLAYER.tilePosition.x * 32
+            PLAYER.mapPixelPosition.y = PLAYER.tilePosition.y * 32
             break;
     }
 }
@@ -688,20 +892,39 @@ function* GEN_getInputSequence(screenTouchX, screenTouchY, playerXTilePosition, 
     
     let i = Math.abs(tileDifference.xDiff)
     let j = Math.abs(tileDifference.yDiff)
-    while(i > 0 || j> 0){
-        if (i>j){
-            for (let k = 0; k<6; k++){
-                inputSequence.push(xDirection)
+    if (Math.random()<= 0.5){
+        while(i > 0 || j> 0){
+            if (i>0){
+                for (let k = 0; k<6; k++){
+                    inputSequence.push(xDirection)
+                }
+                i--
             }
-            i--
-        }
-        else {
-            for (let k = 0; k<6; k++){
-                inputSequence.push(yDirection)
+            else {
+                for (let k = 0; k<6; k++){
+                    inputSequence.push(yDirection)
+                }
+                j--
             }
-            j--
         }
     }
+    else{
+        while(i > 0 || j> 0){
+            if (j>0){
+                for (let k = 0; k<6; k++){
+                    inputSequence.push(yDirection)
+                }
+                j--
+            }
+            else {
+                for (let k = 0; k<6; k++){
+                    inputSequence.push(xDirection)
+                }
+                i--
+            }
+        }
+    }
+    
 
     for (let i = 0; i<inputSequence.length; i++){
         yield inputSequence[i]
@@ -1047,11 +1270,12 @@ function mainGameOverWin(){
         CLOCK.initialize()
         documentInteractionTracker = 0
         PLAYER.heldObject = 'nothing'
-        PLAYER.tilePosition.x = 140
-        PLAYER.tilePosition.y = 190
-        PLAYER.mapPixelPosition.x = 140 * 32
-        PLAYER.mapPixelPosition.y = 190 * 32
+        PLAYER.tilePosition.x = 88
+        PLAYER.tilePosition.y = 188
+        PLAYER.mapPixelPosition.x = 88 * 32
+        PLAYER.mapPixelPosition.y = 188 * 32
         frameForAnimation.value = 0
+        initializeEventList()
         stopAllMusic()
     }
 
@@ -1100,11 +1324,12 @@ function mainGameOverLoss(){
         INPUT = false
         CLOCK.initialize()
         documentInteractionTracker = 0
-        PLAYER.tilePosition.x = 140
-        PLAYER.tilePosition.y = 190
-        PLAYER.mapPixelPosition.x = 140 * 32
-        PLAYER.mapPixelPosition.y = 190 * 32
+        PLAYER.tilePosition.x = 88
+        PLAYER.tilePosition.y = 188
+        PLAYER.mapPixelPosition.x = 88 * 32
+        PLAYER.mapPixelPosition.y = 188 * 32
         frameForAnimation.value = 0
+        initializeEventList()
         stopAllMusic()
     }
 
