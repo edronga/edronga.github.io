@@ -324,6 +324,7 @@ f = function(){
     STORY_PLOT.winCondition = function(){
         return false
     }
+    INPUT = false
     gameMode.set ('talk')
 }
 EVENT_LIST.addEvent(44, 84, f, function(){return imgCharacterMonocole} )
