@@ -93,6 +93,9 @@ imgCrossedBrain.src = 'Images/imgCrossedBrain.png'
 const imgQuestionCandy = new Image()
 imgQuestionCandy.src = 'Images/imgQuestionCandy.png'
 
+const imgWhereToGoMap = new Image ()
+imgWhereToGoMap.src = 'Images/whereToGoMap.png'
+
 let imgHeldObject = new Image ()
 let imgFutureHeldObject = new Image()
 let nameOfFutureHeldObject = 'nothing'
@@ -490,6 +493,15 @@ function initializePassiveEventList(){
     })
 
     PASSIVE_EVENT_LIST.addEvent(203,92, function(){
+        PLAYER.tilePosition.x = 41
+        PLAYER.tilePosition.y = 88
+        PLAYER.mapPixelPosition.x = PLAYER.tilePosition.x * 32
+        PLAYER.mapPixelPosition.y = PLAYER.tilePosition.y * 32
+        currentInputSequence = GEN_empty()
+    
+    })
+
+    PASSIVE_EVENT_LIST.addEvent(100, 8, function(){
         PLAYER.tilePosition.x = 41
         PLAYER.tilePosition.y = 88
         PLAYER.mapPixelPosition.x = PLAYER.tilePosition.x * 32
@@ -1419,7 +1431,15 @@ function mainIntro(){
     let img = imgWomanRunning
     let size = canvas.height * 0.8 * 1/4
     let centerPosition ={
-        x: canvas.width * 0.5 - size* 0.5,
+        x: canvas.width * 0.33- size* 0.5,
+        y: canvas.height* 0.8 * 1/4 - size* 0.5
+    }
+    ctx.drawImage(img, 0,0, img.width, img.height, centerPosition.x, centerPosition.y, size, size )
+
+    img = imgWhereToGoMap
+    size = canvas.height * 0.8 * 1/4
+    centerPosition ={
+        x: canvas.width * 0.70 - size* 0.5,
         y: canvas.height* 0.8 * 1/4 - size* 0.5
     }
     ctx.drawImage(img, 0,0, img.width, img.height, centerPosition.x, centerPosition.y, size, size )
