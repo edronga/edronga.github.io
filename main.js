@@ -338,7 +338,6 @@ f = function(){
     if (STORY_PLOT.winCondition){
         nameOfFutureHeldObject = 'hourglassRunning'
         imgFutureHeldObject = imgHourglassRunning
-        CLOCK.value = 60*3
     }
     INPUT = false
     gameMode.set ('talk')
@@ -1554,6 +1553,9 @@ function mainIntro(){
         INPUT = false
         CLOCK.initialize()
         CLOCK.startTimer()
+        if (PLAYER.heldObject === 'hourglassRunning'){
+            CLOCK.value = 60*5
+        }
         STORY_PLOT.reset()
     }
 }
