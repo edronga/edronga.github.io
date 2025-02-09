@@ -596,6 +596,33 @@ function initializePassiveEventList(){
     }
 
     list = []
+    for (let i = 73; i<= 73; i++){
+        for (let j = 34; j<=39; j++){
+            list.push([i,j])
+        }
+    }
+
+    for (let i = 0; i< list.length; i++){
+        let x = list[i][0]
+        let y = list[i][1]
+        PASSIVE_EVENT_LIST.addEvent(x,y, function(){
+            if (CLOCK.value > 90){
+                CLOCK.add(- 75)
+            }
+            else (CLOCK.value = 10)
+            PASSIVE_EVENT_LIST.removeEvent(x,y)
+            soundEffectWrong.play()
+        }, function(){
+            if ([0,1,2].includes(frameForAnimation.value)){
+                return imgRedBall1
+            }
+            else{
+                return imgRedBall2
+            }
+            })
+    }
+
+    list = []
     for (let i = 115; i<= 115; i++){
         for (let j = 43; j<=49; j++){
             list.push([i,j])
@@ -665,6 +692,30 @@ function initializePassiveEventList(){
         let y = list[i][1]
         PASSIVE_EVENT_LIST.addEvent(x, y, function(){
             CLOCK.add(2)
+            PASSIVE_EVENT_LIST.removeEvent(x, y)
+            soundEffectCoin.play()
+        }, function(){
+            if ([0,1,2].includes(frameForAnimation.value)){
+                return imgShiningBall1
+            }
+            else{
+                return imgShiningBall2
+            }
+            })
+    }
+
+    list = []
+    if (Math.random() <0.5){
+        list.push([84,91])
+    }
+    else {
+        list.push([91,91])
+    }
+    for (let i = 0; i< list.length; i++){
+        let x = list[i][0]
+        let y = list[i][1]
+        PASSIVE_EVENT_LIST.addEvent(x, y, function(){
+            CLOCK.add(30)
             PASSIVE_EVENT_LIST.removeEvent(x, y)
             soundEffectCoin.play()
         }, function(){
@@ -1647,7 +1698,7 @@ function mainGameOverWin(){
     }
     ctx.drawImage(img, 0,0, img.width, img.height, centerPosition.x, centerPosition.y, size, size )
 
-    CLOCK.value = 10000
+    CLOCK.value = 99 * 60
 
     if (currentMusic1 !== 'musicHappyBirthday' && MUSIC_BUTTON_STATE){
         musicTicTacClock.pause() 
