@@ -84,11 +84,22 @@ const imgArrowRight = new Image()
 imgArrowRight.src = 'Images/imgArrowRight.png'
 const imgPartyEmoji = new Image()
 imgPartyEmoji.src = 'Images/imgPartyEmoji.png'
+const imgPooEmoji = new Image ()
+imgPooEmoji.src = 'Images/imgPooEmoji.png'
+const imgHidingEmoji = new Image()
+imgHidingEmoji.src = 'Images/imgHidingEmoji.png'
+const imgCrossedBrain = new Image ()
+imgCrossedBrain.src = 'Images/imgCrossedBrain.png'
+const imgQuestionCandy = new Image()
+imgQuestionCandy.src = 'Images/imgQuestionCandy.png'
 
 let imgHeldObject = new Image ()
+let imgFutureHeldObject = new Image()
+let nameOfFutureHeldObject = 'nothing'
 const imgEmptyCircle = new Image()
 imgEmptyCircle.src = 'Images/imgEmptyCircle.png'
 imgHeldObject = imgEmptyCircle
+imgFutureHeldObject = imgEmptyCircle
 const imgAnatomicalHeart = new Image ()
 imgAnatomicalHeart.src = 'Images/imgAnatomicalHeart.png'
 const imgBanana = new Image ()
@@ -101,6 +112,8 @@ const imgCandy = new Image()
 imgCandy.src = 'Images/imgCandy.png'
 const imgRuby = new Image ()
 imgRuby.src = 'Images/imgRuby.png'
+const imgPushingFingerEmoji = new Image()
+imgPushingFingerEmoji.src = 'Images/imgPushingFingerEmoji.png'
 
 let plotImages = []
 const imgZombie = new Image()
@@ -113,6 +126,14 @@ const imgNerdEmoji = new Image()
 imgNerdEmoji.src = 'Images/imgNerdEmoji.png'
 const imgEyeRollEmoji = new Image ()
 imgEyeRollEmoji.src = 'Images/imgEyeRollEmoji.png'
+const imgGhost = new Image ()
+imgGhost.src = 'Images/imgGhost.png'
+const imgKissEmoji = new Image()
+imgKissEmoji.src = 'Images/imgKissEmoji.png'
+const imgTrade = new Image ()
+imgTrade.src = 'Images/imgTrade.png'
+const imgMonocleEmoji = new Image()
+imgMonocleEmoji.src = 'Images/imgMonocleEmoji.png'
 
 const imgTransparent = new Image()
 imgTransparent.src = 'Images/imgTransparent.png'
@@ -122,8 +143,8 @@ musicOnButton.src = 'Images/musicOnButton.png'
 const musicOffButton = new Image()
 musicOffButton.src = 'Images/musicOffButton.png'
 let musicButton = new Image()
-musicButton = musicOffButton
-let MUSIC_BUTTON_STATE = false
+musicButton = musicOnButton
+let MUSIC_BUTTON_STATE = true
 function switchMusicButton(){
     MUSIC_BUTTON_STATE = !MUSIC_BUTTON_STATE
     if (MUSIC_BUTTON_STATE === true){
@@ -134,6 +155,7 @@ function switchMusicButton(){
         stopAllMusic()
     }
 }
+
 
 const imgShiningBall1 = new Image()
 imgShiningBall1.src = 'Images/shiningBall1.png'
@@ -152,6 +174,9 @@ const imgCharacterMonocole = new Image()
 imgCharacterMonocole.src = 'Images/characterMonocle.png'
 const imgCharacterZombie = new Image ()
 imgCharacterZombie.src = 'Images/characterZombie.png'
+
+const imgClock = new Image()
+imgClock.src = 'Images/imgClock.png'
 
 const map = new Image ()
 map.src = 'Images/mainMap.png'
@@ -233,17 +258,91 @@ let EVENT_LIST = {
     }
 }
 
-let f = function(){
-    STORY_PLOT.images = [[imgSpeechBubble, imgZombie], [imgBrain, imgPrayingEmoji]]
-    STORY_PLOT.imagesWin = [0, 0, imgNerdEmoji]
-    STORY_PLOT.imagesLoss = [0, 0, imgEyeRollEmoji]
+let f = function(){}
+
+function intiatizeActiveEventList(){
+    f = function(){
+        STORY_PLOT.images = [[imgSpeechBubble, imgGhost],[imgKissEmoji, imgPrayingEmoji]]
+        STORY_PLOT.imagesWin = [0, 0, imgTrade, imgKissEmoji, imgTrade, imgCandy]
+        STORY_PLOT.imagesLoss = [0, 0, imgMemojiDisappointed]
+        STORY_PLOT.winCondition = function(){
+            return PLAYER.heldObject === 'nothing'
+        }
+        if (STORY_PLOT.winCondition){
+            nameOfFutureHeldObject = 'candy'
+            imgFutureHeldObject = imgCandy
+            let list = [[135,18], [135,19], [145,21],[146,21]]
+            for (let i = 0; i< list.length; i++){
+                let x = list[i][0]
+                let y = list[i][1]
+                PASSIVE_EVENT_LIST.addEvent(x,y, function(){
+                    CLOCK.value = 3
+                    PASSIVE_EVENT_LIST.removeEvent(x,y)
+                    soundEffectWrong.play()
+                }, function(){
+                    if ([0,1,2].includes(frameForAnimation.value)){
+                        return imgRedBall1
+                    }
+                    else{
+                        return imgRedBall2
+                    }
+                    })
+            }
+        }
+        INPUT = false
+        gameMode.set ('talk')
+    }
+    EVENT_LIST.addEvent(148, 14, f, function(){return imgCharacterGhost} )
+    
+    f = function(){
+        STORY_PLOT.images = [[imgSpeechBubble, imgZombie],[imgBrain, imgPrayingEmoji]]
+        STORY_PLOT.imagesWin = [0, 0, imgTrade, imgBrain, imgZombie, imgMemojiDisappointed, imgZombie, imgMemojiAshamed, imgZombie, imgMemojiAshamed, imgCrossedBrain,imgZombie, imgMemojiAshamed, imgZombie, imgQuestionCandy, imgEyeRollEmoji, imgTrade, imgCandy,imgTrade, imgBanana]
+        STORY_PLOT.imagesLoss = [0, 0, imgMemojiDisappointed]
+        STORY_PLOT.winCondition = function(){
+            return PLAYER.heldObject === 'candy'
+        }
+        if (STORY_PLOT.winCondition){
+            nameOfFutureHeldObject = 'banana'
+            imgFutureHeldObject = imgBanana
+        }
+        INPUT = false
+        gameMode.set ('talk')
+    }
+    EVENT_LIST.addEvent(94, 12, f, function(){return imgCharacterZombie} )
+
+}
+
+
+f = function(){
+    STORY_PLOT.images = [[imgSpeechBubble, imgMonocleEmoji],[imgPooEmoji, imgHidingEmoji]]
+    STORY_PLOT.imagesWin = [0, 0]
+    STORY_PLOT.imagesLoss = [0, 0, imgMemojiAshamed, imgPooEmoji, imgMemojiAshamed, imgPooEmoji, imgMemojiAshamed, imgPooEmoji, imgMemojiAshamed, imgPooEmoji, imgMemojiAshamed, imgPooEmoji, imgMemojiAshamed, imgPooEmoji, imgMemojiAshamed, imgPooEmoji, imgMemojiAshamed]
+    CLOCK.value = 15
     STORY_PLOT.winCondition = function(){
-        return PLAYER.heldObject === 'brain'
+        return false
+    }
+    gameMode.set ('talk')
+}
+EVENT_LIST.addEvent(44, 84, f, function(){return imgCharacterMonocole} )
+
+f = function(){
+    STORY_PLOT.images = [[imgSpeechBubble, imgNerdEmoji],[imgBanana, imgPrayingEmoji]]
+    STORY_PLOT.imagesWin = [0, 0, imgTrade, imgBanana, imgTrade, imgHourglassRunning]
+    STORY_PLOT.imagesLoss = [0, 0, imgMemojiDisappointed]
+    STORY_PLOT.winCondition = function(){
+        return PLAYER.heldObject === 'banana'
+    }
+    if (STORY_PLOT.winCondition){
+        nameOfFutureHeldObject = 'hourglassRunning'
+        imgFutureHeldObject = imgHourglassRunning
+        CLOCK.value = 60*3
     }
     INPUT = false
     gameMode.set ('talk')
 }
-EVENT_LIST.addEvent(136, 184, f)
+EVENT_LIST.addEvent(58, 178, f, function(){return imgCharacterGlasses} )
+
+intiatizeActiveEventList()
 
 /* Event List : passive events */
 let PASSIVE_EVENT_LIST = {
@@ -280,7 +379,7 @@ let PASSIVE_EVENT_LIST = {
     }
 }
 
-function initializeEventList(){
+function initializePassiveEventList(){
     PASSIVE_EVENT_LIST.addEvent(88,192, function(){
         PLAYER.tilePosition.x = 150
         PLAYER.tilePosition.y = 150
@@ -289,6 +388,7 @@ function initializeEventList(){
         currentInputSequence = GEN_empty()
     
     })
+
     for (let i = 142; i< 158; i++){
         PASSIVE_EVENT_LIST.addEvent(i,147, function(){
         PLAYER.tilePosition.x = 88
@@ -298,6 +398,123 @@ function initializeEventList(){
         currentInputSequence = GEN_empty()
         })
     }
+
+    PASSIVE_EVENT_LIST.addEvent(88,167, function(){
+        PLAYER.tilePosition.x = 41
+        PLAYER.tilePosition.y = 88
+        PLAYER.mapPixelPosition.x = PLAYER.tilePosition.x * 32
+        PLAYER.mapPixelPosition.y = PLAYER.tilePosition.y * 32
+        currentInputSequence = GEN_empty()
+    
+    })
+
+    PASSIVE_EVENT_LIST.addEvent(66,150, function(){
+        PLAYER.tilePosition.x = 41
+        PLAYER.tilePosition.y = 88
+        PLAYER.mapPixelPosition.x = PLAYER.tilePosition.x * 32
+        PLAYER.mapPixelPosition.y = PLAYER.tilePosition.y * 32
+        currentInputSequence = GEN_empty()
+    
+    })
+
+    PASSIVE_EVENT_LIST.addEvent(70,26, function(){
+        PLAYER.tilePosition.x = 41
+        PLAYER.tilePosition.y = 88
+        PLAYER.mapPixelPosition.x = PLAYER.tilePosition.x * 32
+        PLAYER.mapPixelPosition.y = PLAYER.tilePosition.y * 32
+        currentInputSequence = GEN_empty()
+    
+    })
+
+    PASSIVE_EVENT_LIST.addEvent(10,48, function(){
+        PLAYER.tilePosition.x = 41
+        PLAYER.tilePosition.y = 88
+        PLAYER.mapPixelPosition.x = PLAYER.tilePosition.x * 32
+        PLAYER.mapPixelPosition.y = PLAYER.tilePosition.y * 32
+        currentInputSequence = GEN_empty()
+    
+    })
+
+    PASSIVE_EVENT_LIST.addEvent(135,149, function(){
+        PLAYER.tilePosition.x = 41
+        PLAYER.tilePosition.y = 88
+        PLAYER.mapPixelPosition.x = PLAYER.tilePosition.x * 32
+        PLAYER.mapPixelPosition.y = PLAYER.tilePosition.y * 32
+        currentInputSequence = GEN_empty()
+    
+    })
+
+    PASSIVE_EVENT_LIST.addEvent(175,174, function(){
+        PLAYER.tilePosition.x = 41
+        PLAYER.tilePosition.y = 88
+        PLAYER.mapPixelPosition.x = PLAYER.tilePosition.x * 32
+        PLAYER.mapPixelPosition.y = PLAYER.tilePosition.y * 32
+        currentInputSequence = GEN_empty()
+    
+    })
+
+    PASSIVE_EVENT_LIST.addEvent(181,174, function(){
+        PLAYER.tilePosition.x = 41
+        PLAYER.tilePosition.y = 88
+        PLAYER.mapPixelPosition.x = PLAYER.tilePosition.x * 32
+        PLAYER.mapPixelPosition.y = PLAYER.tilePosition.y * 32
+        currentInputSequence = GEN_empty()
+    
+    })
+
+    PASSIVE_EVENT_LIST.addEvent(189,135, function(){
+        PLAYER.tilePosition.x = 41
+        PLAYER.tilePosition.y = 88
+        PLAYER.mapPixelPosition.x = PLAYER.tilePosition.x * 32
+        PLAYER.mapPixelPosition.y = PLAYER.tilePosition.y * 32
+        currentInputSequence = GEN_empty()
+    
+    })
+
+    PASSIVE_EVENT_LIST.addEvent(190,135, function(){
+        PLAYER.tilePosition.x = 41
+        PLAYER.tilePosition.y = 88
+        PLAYER.mapPixelPosition.x = PLAYER.tilePosition.x * 32
+        PLAYER.mapPixelPosition.y = PLAYER.tilePosition.y * 32
+        currentInputSequence = GEN_empty()
+    
+    })
+
+    PASSIVE_EVENT_LIST.addEvent(202,92, function(){
+        PLAYER.tilePosition.x = 41
+        PLAYER.tilePosition.y = 88
+        PLAYER.mapPixelPosition.x = PLAYER.tilePosition.x * 32
+        PLAYER.mapPixelPosition.y = PLAYER.tilePosition.y * 32
+        currentInputSequence = GEN_empty()
+    
+    })
+
+    PASSIVE_EVENT_LIST.addEvent(203,92, function(){
+        PLAYER.tilePosition.x = 41
+        PLAYER.tilePosition.y = 88
+        PLAYER.mapPixelPosition.x = PLAYER.tilePosition.x * 32
+        PLAYER.mapPixelPosition.y = PLAYER.tilePosition.y * 32
+        currentInputSequence = GEN_empty()
+    
+    })
+
+    PASSIVE_EVENT_LIST.addEvent(41,89, function(){
+        PLAYER.tilePosition.x = 88
+        PLAYER.tilePosition.y = 158
+        PLAYER.mapPixelPosition.x = PLAYER.tilePosition.x * 32
+        PLAYER.mapPixelPosition.y = PLAYER.tilePosition.y * 32
+        currentInputSequence = GEN_empty()
+    
+    })
+
+    PASSIVE_EVENT_LIST.addEvent(42,89, function(){
+        PLAYER.tilePosition.x = 88
+        PLAYER.tilePosition.y = 158
+        PLAYER.mapPixelPosition.x = PLAYER.tilePosition.x * 32
+        PLAYER.mapPixelPosition.y = PLAYER.tilePosition.y * 32
+        currentInputSequence = GEN_empty()
+    
+    })
 
     let list = []
     let list2 = []
@@ -318,7 +535,7 @@ function initializeEventList(){
         let x = list[i][0]
         let y = list[i][1]
         PASSIVE_EVENT_LIST.addEvent(x, y, function(){
-            CLOCK.add(10)
+            CLOCK.add(6)
             PASSIVE_EVENT_LIST.removeEvent(x, y)
             soundEffectCoin.play()
         }, function(){
@@ -438,7 +655,7 @@ function initializeEventList(){
 
     list = []
 
-    for (let i = 131; i <=162; i++){
+    for (let i = 132; i <=162; i++){
         for (let j = 40; j<= 45; j++){
             if (Math.random() <= 0.5){
                 list.push([i,j])
@@ -472,13 +689,14 @@ function initializeEventList(){
         let x = list[i][0]
         let y = list[i][1]
         PASSIVE_EVENT_LIST.addEvent(x, y, function(){
+            INPUT = false
             gameMode.set('gameOverWin')
         })
     }
 
     
 }
-initializeEventList()
+initializePassiveEventList()
 
 
 
@@ -496,7 +714,7 @@ let touchPosition = {
     }
 }
 let gameMode = {
-    value:"",
+    value: '',
     set: function(gameModeName){
         if (gameModeName === 'walk'){
             this.value = 'walk'
@@ -512,6 +730,12 @@ let gameMode = {
         }
         else if (gameModeName === 'gameOverLoss'){
             this.value = 'gameOverLoss'
+        }
+        else if (gameModeName === 'titleScreen'){
+            this.value = 'titleScreen'
+        }
+        else if (gameModeName === 'titleScreen2'){
+            this.value = 'titleScreen2'
         }
         else {gameMode.value = 'undefined game mode'}
     }
@@ -618,6 +842,11 @@ let TARGET_TILE = {
 }
 
 let getRandomColorAtTimedInterval = GEN_randomColorTimeInterval(200)
+let alternatingBoolean = GEN_alternatingBoolean()
+let getSequencialDegreesInRadian = GEN_getConsecutiveDegreeInRadian(60)
+let getRainbowColors = GEN_rainbowColors()
+let titleScreenAngle = 0
+let titleScreenColor = ''
 
 /* Event listeners :
 - on 'resize' : resize the canvas
@@ -638,16 +867,14 @@ document.addEventListener('touchstart', function (e) {
     e.preventDefault();
 }, {passive: false})
 document.addEventListener('touchstart', function(e){
-    //e.preventDefault()
     touchPosition.active = true
-    INPUT = true
     touchPosition.x = e.touches[0].clientX
     touchPosition.y = e.touches[0].clientY
 
     documentInteractionTracker++
-    if (documentInteractionTracker === 2){
-        CLOCK.initialize()
-        CLOCK.startTimer()
+
+    if (touchPosition.y < canvas.height * 0.8){
+        INPUT = true
     }
     
     if (touchPosition.y >= canvas.height * 0.8){
@@ -656,6 +883,7 @@ document.addEventListener('touchstart', function(e){
         }
         return;
     }
+
     if (gameMode.value === "walk"){
         getInputSequence = GEN_getInputSequence(touchPosition.x, touchPosition.y, PLAYER.tilePosition.x, PLAYER.tilePosition.y)
         NEW_INPUT_SEQUENCE = true
@@ -663,7 +891,6 @@ document.addEventListener('touchstart', function(e){
     
 })
 document.addEventListener("touchend", function(e){
-    //e.preventDefault()
     touchPosition.active = false
 })
 
@@ -680,6 +907,12 @@ function gameLoop(){
 
 function main(){
     switch (gameMode.value){
+        case 'titleScreen':
+            mainTitleScreen()
+            break;
+        case 'titleScreen2':
+            mainTitleScreen2()
+            break;
         case 'walk':
             mainWalk()
             break;
@@ -699,11 +932,13 @@ function main(){
             console.log("variable gameMode.value was poorly defined")
     }
 
-    drawClock()
-    drawMusicButton()
-    drawCarriedObject()
+    if (gameMode.value !== 'titleScreen' && gameMode.value !== 'titleScreen2'){
+        drawClock()
+        drawMusicButton()
+        drawCarriedObject()
+    }
 
-    if (gameMode.value !== 'intro'){
+    if (gameMode.value !== 'titleScreen' && gameMode.value !== 'titleScreen2'){
         updateClockMusic()
         checkIfLostOnTime()
     }
@@ -892,7 +1127,7 @@ function* GEN_getInputSequence(screenTouchX, screenTouchY, playerXTilePosition, 
     
     let i = Math.abs(tileDifference.xDiff)
     let j = Math.abs(tileDifference.yDiff)
-    if (Math.random()<= 0.5){
+    if (alternatingBoolean.next().value){
         while(i > 0 || j> 0){
             if (i>0){
                 for (let k = 0; k<6; k++){
@@ -1021,7 +1256,7 @@ let STORY_PLOT = {
     images: [],
     imagesWin: [],
     imagesLoss:[],
-    winCondition: function(){}
+    winCondition: function(){return false}
 }
 
 
@@ -1031,12 +1266,12 @@ function mainTalk(){
     ctx.fillRect(0,0, canvas.width, canvas.height)
     ctx.strokeWidth = 3
     ctx.strokeStyle = 'blue'
-    ctx.strokeRect (3, 3, canvas.width -15, canvas.height-15)
+    ctx.strokeRect (3, 3, canvas.width -6, canvas.height-6)
     ctx.strokeStyle = 'green'
-    ctx.strokeRect (9, 9, canvas.width -27, canvas.height-27)
+    ctx.strokeRect (9, 9, canvas.width -18, canvas.height-18)
     if (STORY_PLOT.plotTracker < STORY_PLOT.images.length){
         let img = STORY_PLOT.images[STORY_PLOT.plotTracker][0]
-        let size = canvas.height * 0.8 * 1/4
+        let size = canvas.height * 0.8 * 1/3
         let centerPosition ={
             x: canvas.width * 0.5 - size* 0.5,
             y: canvas.height* 0.8/3 - size* 0.5
@@ -1044,7 +1279,7 @@ function mainTalk(){
         ctx.drawImage(img, 0,0, img.width, img.height, centerPosition.x, centerPosition.y, size, size )
 
         img = STORY_PLOT.images[STORY_PLOT.plotTracker][1]
-        size = canvas.height * 0.8 * 1/4
+        size = canvas.height * 0.8 * 1/3
         centerPosition ={
             x: canvas.width * 0.5 - size* 0.5,
             y: canvas.height* 0.8* 2/3 - size* 0.5
@@ -1057,7 +1292,7 @@ function mainTalk(){
             let size = canvas.width * 0.8
             let centerPosition ={
                 x: canvas.width * 0.5 - size* 0.5,
-                y: canvas.height* 0.5 - size* 0.5
+                y: canvas.height* 0.4 - size* 0.5
             }
             ctx.drawImage(img, 0,0, img.width, img.height, centerPosition.x, centerPosition.y, size, size)
         }
@@ -1074,6 +1309,9 @@ function mainTalk(){
             gameMode.set('walk')
             if (STORY_PLOT.winCondition() === true){
                 EVENT_LIST.removeEvent(TARGET_TILE.x, TARGET_TILE.y)
+                imgHeldObject = imgFutureHeldObject
+                PLAYER.heldObject = nameOfFutureHeldObject
+                soundEffectCoin.play()
             }
             PLAYER.tilePosition.y = TARGET_TILE.y +1
             PLAYER.mapPixelPosition.y = TARGET_TILE.y*32 +32
@@ -1098,6 +1336,13 @@ function mainTalk(){
 function* GEN_empty(){
     while (true){
         yield ""
+    }
+}
+
+function* GEN_alternatingBoolean(){
+    while (true){
+        yield true;
+        yield false;
     }
 }
 
@@ -1156,6 +1401,11 @@ function drawMusicButton(){
 
 function drawCarriedObject(){
     ctx.drawImage(imgHeldObject, 0, 0, imgHeldObject.width, imgHeldObject.height, canvas.width * 0.52, canvas.height * 0.90 - canvas.width * 0.1, canvas.width * 0.2,canvas.width * 0.2)
+    if (gameMode.value === 'talk'){
+        ctx.strokeStyle = STORY_PLOT.winCondition()? 'green':'red';
+        ctx.strokeRect(canvas.width * 0.52, canvas.height * 0.90 - canvas.width * 0.1, canvas.width * 0.2,canvas.width * 0.2)
+    }
+    
 }
 
 function mainIntro(){
@@ -1163,9 +1413,9 @@ function mainIntro(){
     ctx.fillRect(0,0, canvas.width, canvas.height)
     ctx.strokeWidth = 3
     ctx.strokeStyle = 'red'
-    ctx.strokeRect (3, 3, canvas.width -15, canvas.height-15)
+    ctx.strokeRect (3, 3, canvas.width -6, canvas.height-6)
     ctx.strokeStyle = 'orange'
-    ctx.strokeRect (9, 9, canvas.width -27, canvas.height-27)
+    ctx.strokeRect (9, 9, canvas.width -18, canvas.height-18)
     let img = imgWomanRunning
     let size = canvas.height * 0.8 * 1/4
     let centerPosition ={
@@ -1225,8 +1475,74 @@ function mainIntro(){
     if (INPUT){
         gameMode.set('walk')
         INPUT = false
+        CLOCK.initialize()
+        CLOCK.startTimer()
+        STORY_PLOT.reset()
+    }
+}
+
+function mainTitleScreen (){
+    let color = getRainbowColors.next().value
+    ctx.fillStyle = color
+    ctx.fillRect(0,0, canvas.width, canvas.height) 
+    let size = canvas.width
+    let centerPosition ={
+        x: canvas.width * 0.5 - size * 0.5,
+        y: canvas.height* 0.5  - size * 0.5
+    }
+    ctx.translate(canvas.width/2,canvas.height/2);
+    let angle = getSequencialDegreesInRadian.next().value
+    ctx.rotate(angle)
+    ctx.drawImage(imgClock, 0, 0, imgClock.width, imgClock.height, centerPosition.x - canvas.width/2, centerPosition.y - canvas.height/2, size, size)
+    ctx.rotate(-angle)
+    ctx.translate(-canvas.width/2,-canvas.height/2)
+    
+    if (INPUT){
+        gameMode.set('titleScreen2')
+        titleScreenAngle = angle
+        titleScreenColor = color
+        INPUT = false
+    }
+}
+
+function mainTitleScreen2 (){
+    ctx.fillStyle = titleScreenColor
+    ctx.fillRect(0,0, canvas.width, canvas.height) 
+    let size = canvas.width
+    let centerPosition ={
+        x: canvas.width * 0.5 - size * 0.5,
+        y: canvas.height* 0.5  - size * 0.5
+    }
+    ctx.translate(canvas.width/2,canvas.height/2);
+    let angle = titleScreenAngle
+    ctx.rotate(angle)
+    ctx.drawImage(imgClock, 0, 0, imgClock.width, imgClock.height, centerPosition.x - canvas.width/2, centerPosition.y - canvas.height/2, size, size)
+    ctx.rotate(-angle)
+    ctx.translate(-canvas.width/2,-canvas.height/2)
+    
+    if (INPUT){
+        gameMode.set('intro')
+        INPUT = false
+        CLOCK.initialize()
     }
 
+}
+
+function* GEN_getConsecutiveDegreeInRadian(n, timeInterval = 500){
+    let r = 0
+    const increment = 2* Math.PI / n
+    let timeStamp1 = Date.now()
+    
+    while(true){
+        if (Date.now() - timeStamp1 > timeInterval){
+            if (r > 2* Math.PI ){
+                r = 0
+            }
+            yield r;
+            timeStamp1 = Date.now()
+            r = r + increment
+        }
+    }  
 }
 
 function mainGameOverWin(){
@@ -1263,9 +1579,9 @@ function mainGameOverWin(){
         currentMusic1 = 'musicHappyBirthday'
         currentMusic2 = ''
     }
-
+/*
     if (INPUT){
-        gameMode.set('intro')
+        gameMode.set('titleScreen')
         INPUT = false
         CLOCK.initialize()
         documentInteractionTracker = 0
@@ -1275,9 +1591,10 @@ function mainGameOverWin(){
         PLAYER.mapPixelPosition.x = 88 * 32
         PLAYER.mapPixelPosition.y = 188 * 32
         frameForAnimation.value = 0
-        initializeEventList()
+        initializePassiveEventList()
         stopAllMusic()
     }
+*/
 
 }
 
@@ -1294,14 +1611,24 @@ function* GEN_randomColorTimeInterval(timeInterval){
     }
 }
 
+function* GEN_rainbowColors(){
+    let colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"]
+    let i = 0
+    while(true){
+        yield colors[i]
+        i++
+        if (i === colors.length){i = 0}
+    }
+}
+
 function mainGameOverLoss(){
     ctx.fillStyle = 'black'
     ctx.fillRect(0,0, canvas.width, canvas.height)
     ctx.strokeWidth = 3
     ctx.strokeStyle = 'white'
-    ctx.strokeRect (3, 3, canvas.width -15, canvas.height-15)
+    ctx.strokeRect (3, 3, canvas.width -6, canvas.height-6)
     ctx.strokeStyle = 'white'
-    ctx.strokeRect (9, 9, canvas.width -27, canvas.height-27)
+    ctx.strokeRect (9, 9, canvas.width -18, canvas.height-18)
     let img = imgMemojiCrying
     let size = canvas.height * 0.8 * 0.5
     let centerPosition ={
@@ -1320,7 +1647,7 @@ function mainGameOverLoss(){
     }
 
     if (INPUT){
-        gameMode.set('intro')
+        gameMode.set('titleScreen')
         INPUT = false
         CLOCK.initialize()
         documentInteractionTracker = 0
@@ -1329,7 +1656,7 @@ function mainGameOverLoss(){
         PLAYER.mapPixelPosition.x = 88 * 32
         PLAYER.mapPixelPosition.y = 188 * 32
         frameForAnimation.value = 0
-        initializeEventList()
+        initializePassiveEventList()
         stopAllMusic()
     }
 
@@ -1337,7 +1664,7 @@ function mainGameOverLoss(){
 }
 
 // debugging
-gameMode.set("intro")
+gameMode.set('titleScreen')
 
 // Lauching game Loop
 
