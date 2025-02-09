@@ -567,7 +567,13 @@ function initializePassiveEventList(){
         }
     }
 
-    for (let i = 105; i<= 129; i++){
+    for (let i = 105; i<= 114; i++){
+        for (let j = 43; j<=49; j++){
+            list.push([i,j])
+        }
+    }
+
+    for (let i = 115; i<= 128; i++){
         for (let j = 43; j<=49; j++){
             list.push([i,j])
         }
@@ -578,6 +584,29 @@ function initializePassiveEventList(){
         let y = list[i][1]
         PASSIVE_EVENT_LIST.addEvent(x,y, function(){
             CLOCK.add(-2)
+            PASSIVE_EVENT_LIST.removeEvent(x,y)
+            soundEffectWrong.play()
+        }, function(){
+            if ([0,1,2].includes(frameForAnimation.value)){
+                return imgRedBall1
+            }
+            else{
+                return imgRedBall2
+            }
+            })
+    }
+
+    list = []
+    for (let i = 115; i<= 115; i++){
+        for (let j = 43; j<=49; j++){
+            list.push([i,j])
+        }
+    }
+    for (let i = 0; i< list.length; i++){
+        let x = list[i][0]
+        let y = list[i][1]
+        PASSIVE_EVENT_LIST.addEvent(x,y, function(){
+            CLOCK.value = 5
             PASSIVE_EVENT_LIST.removeEvent(x,y)
             soundEffectWrong.play()
         }, function(){
@@ -629,6 +658,31 @@ function initializePassiveEventList(){
             }
             if (Math.random() >= 0.975){
                 list2.push([i,j])
+            }
+        }
+    }
+    for (let i = 0; i< list.length; i++){
+        let x = list[i][0]
+        let y = list[i][1]
+        PASSIVE_EVENT_LIST.addEvent(x, y, function(){
+            CLOCK.add(2)
+            PASSIVE_EVENT_LIST.removeEvent(x, y)
+            soundEffectCoin.play()
+        }, function(){
+            if ([0,1,2].includes(frameForAnimation.value)){
+                return imgShiningBall1
+            }
+            else{
+                return imgShiningBall2
+            }
+            })
+    }
+
+    list = []
+    for (let i = 90; i <= 97; i++){
+        for (let j = 14; j<= 19; j++){
+            if (Math.random() <= 0.5){
+                list.push([i,j])
             }
         }
     }
@@ -1324,6 +1378,9 @@ function mainTalk(){
                 imgHeldObject = imgFutureHeldObject
                 PLAYER.heldObject = nameOfFutureHeldObject
                 soundEffectCoin.play()
+            }
+            else {
+                soundEffectWrong.play()
             }
             PLAYER.tilePosition.y = TARGET_TILE.y +1
             PLAYER.mapPixelPosition.y = TARGET_TILE.y*32 +32
