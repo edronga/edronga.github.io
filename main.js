@@ -1313,15 +1313,15 @@ function drawTargetTile()
 function drawEventSprites(){
     for (let p in EVENT_LIST.drawingBoard){
         if (EVENT_LIST.drawingBoard[p] !== undefined){
-            let x = (- PLAYER.tilePosition.x + EVENT_LIST.drawingBoard[p]["x"])*32 + PLAYER.screenPosition.x
-            let y = (- PLAYER.tilePosition.y + EVENT_LIST.drawingBoard[p]["y"])*32 + PLAYER.screenPosition.y
+            let x = - PLAYER.mapPixelPosition.x + (EVENT_LIST.drawingBoard[p]["x"])*32 + PLAYER.screenPosition.x
+            let y = - PLAYER.mapPixelPosition.y + (EVENT_LIST.drawingBoard[p]["y"])*32 + PLAYER.screenPosition.y
             ctx.drawImage(EVENT_LIST.drawingBoard[p]["sprite"](), x,y)
         }    
     }
     for (let p in PASSIVE_EVENT_LIST.drawingBoard){
         if (PASSIVE_EVENT_LIST.drawingBoard[p] !== undefined){
-            let x = (- PLAYER.tilePosition.x + PASSIVE_EVENT_LIST.drawingBoard[p]["x"])*32 + PLAYER.screenPosition.x
-            let y = (- PLAYER.tilePosition.y + PASSIVE_EVENT_LIST.drawingBoard[p]["y"])*32 + PLAYER.screenPosition.y
+            let x = - PLAYER.mapPixelPosition.x + (PASSIVE_EVENT_LIST.drawingBoard[p]["x"])*32 + PLAYER.screenPosition.x
+            let y = - PLAYER.mapPixelPosition.y + (PASSIVE_EVENT_LIST.drawingBoard[p]["y"])*32 + PLAYER.screenPosition.y
             ctx.drawImage(PASSIVE_EVENT_LIST.drawingBoard[p]["sprite"](), x,y)
         }
         
