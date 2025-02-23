@@ -1302,8 +1302,8 @@ function drawTargetTile()
     ctx.strokeStyle = "blue"
     ctx.lineWidth = 3
     // -playerXMapPixelPosition + playerScreenPositionXPixel
-    let x = (- PLAYER.tilePosition.x + TARGET_TILE.x)*32 + PLAYER.screenPosition.x
-    let y = (- PLAYER.tilePosition.y + TARGET_TILE.y) *32 + PLAYER.screenPosition.y
+    let x = - PLAYER.mapPixelPosition.x + (TARGET_TILE.x)*32 + PLAYER.screenPosition.x
+    let y = - PLAYER.mapPixelPosition.y + (TARGET_TILE.y) *32 + PLAYER.screenPosition.y
     ctx.beginPath()
     ctx.arc(x + 16, y +16, Math.sqrt(Math.pow(16,2) + Math.pow(16,2)), 0, 2* Math.PI)
     ctx.stroke()
